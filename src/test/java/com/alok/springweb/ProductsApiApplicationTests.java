@@ -2,7 +2,7 @@ package com.alok.springweb;
 
 import static org.junit.Assert.*;
 
-
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.client.RestTemplate;
@@ -13,16 +13,10 @@ import com.alok.springweb.entities.Product;
 class ProductsApiApplicationTests {
 
 	private static final String PRODUCTS_URL = "http://127.0.0.1:8080/products/";
-
-	@Test
-	void testGetProduct() {
-		RestTemplate restTemplate = new RestTemplate();
-		Product product = restTemplate.getForObject(PRODUCTS_URL+5, Product.class);
-		assertNotNull(product);
-		assertEquals("Iphone", product.getName());
-	}
+	private static int ID;
 	
 	@Test
+	@Order(1)
 	void testCreateProduct(){
 		RestTemplate restTemplate = new RestTemplate();
 		Product product2 = new Product();
@@ -34,28 +28,40 @@ class ProductsApiApplicationTests {
 		assertNotNull(productPostRes);
 		assertNotNull(productPostRes.getId());
 		assertEquals("Sam Mobile", productPostRes.getName());
+		ID = productPostRes.getId();
 	}
+
+	@Test
+
+	void testGetProduct() {
+		RestTemplate restTemplate = new RestTemplate();
+		Product product = restTemplate.getForObject(PRODUCTS_URL+ID, Product.class);
+		assertNotNull(product);
+		assertEquals("Sam Mobile", product.getName());
+	}
+	
+	
 	
 	@Test
 	void testUpdateProduct()
 	{
 		RestTemplate restTemplate = new RestTemplate();
-		Product product = restTemplate.getForObject(PRODUCTS_URL+2, Product.class);
+		Product product = restTemplate.getForObject(PRODUCTS_URL+ID, Product.class);
 		product.setPrice(2000);
 		restTemplate.put(PRODUCTS_URL, product);
 		
-		product = restTemplate.getForObject(PRODUCTS_URL+2, Product.class);
+		product = restTemplate.getForObject(PRODUCTS_URL+ID, Product.class);
 		assertEquals(2000, product.getPrice());
 	}
 	
+	/* To be implemented later 
 	@Test
-	void deleteProduct() {
+	void testdeleteProduct() {
 		RestTemplate restTemplate = new RestTemplate();
 		//Product product = restTemplate.getForObject(PRODUCTS_URL+5, Product.class);
-		restTemplate.delete(PRODUCTS_URL+5);
+		restTemplate.delete(PRODUCTS_URL+ID);
 		
-		Product product = restTemplate.getForObject(PRODUCTS_URL+5, Product.class);
-		assertNull(product);
 	}
+	*/
 
 }
