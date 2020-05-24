@@ -16,7 +16,11 @@ class ProductsApiApplicationTests {
 	private static int ID;
 	
 	@Test
-	@Order(1)
+	void TestRun()
+	{
+		ProductsApiApplication.main(new String[] {});
+	}
+	/*
 	void testCreateProduct(){
 		RestTemplate restTemplate = new RestTemplate();
 		Product product2 = new Product();
@@ -54,7 +58,7 @@ class ProductsApiApplicationTests {
 		assertEquals(2000, product.getPrice());
 	}
 	
-	/* To be implemented later 
+	 To be implemented later 
 	@Test
 	void testdeleteProduct() {
 		RestTemplate restTemplate = new RestTemplate();
